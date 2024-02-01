@@ -15,7 +15,6 @@
             justify-content: center;
             height: 100vh;
         }
-
         form {
             background-color: #fff;
             padding: 20px;
@@ -24,7 +23,6 @@
             max-width: 400px;
             width: 100%;
         }
-
         input[type="file"] {
             display: block;
             margin-bottom: 15px;
@@ -34,7 +32,6 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-
         input[type="submit"] {
             background-color: #3498db;
             color: #fff;
@@ -45,7 +42,6 @@
             font-size: 1.2em;
             transition: background-color 0.3s;
         }
-
         input[type="submit"]:hover {
             background-color: #2980b9;
         }
@@ -53,16 +49,13 @@
 </head>
 <body>
     <br>
-
     <form action="{{url_for('upload')}}" method="post" enctype="multipart/form-data">
         <input type="file" name="image" accept="image/*" multiple required><br><br>
         <input type="submit" value="Upload">
     </form>
-    
     {% for image in image_files %}
             <div id="{{image}}" class="urls" hidden>{{ url_for('static', filename='uploads/' + image) }}</div>
     {% endfor %}
-
     <script>
         var urlDivs = document.querySelectorAll('.urls');
         urlDivs.forEach(function(div){

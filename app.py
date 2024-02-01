@@ -4,7 +4,7 @@ from datetime import date, timedelta
 import os
 
 app = Flask(__name__)
-app.secret_key = "zx5qsEyijgsjOhLrA7u"
+app.secret_key = "zs9qsEyijgsjOoLrA7u"
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -23,29 +23,22 @@ def redirect_https():
 
 
 @app.route('/')
-def index():
-    image_files = [f for f in os.listdir(app.config['UPLOAD_FOLDER']) if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], f))]
-    return render_template('index.html', image_files=image_files)
-
+def home():
+    if 'user_id' in session:
+        image_files = [f for f in os.listdir(app.config['UPLOAD_FOLDER']) if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], f))]
+        return render_template('home.html', image_files=image_files)
+    else:
+        return(render_template('login.html'))
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    if request.method == 'POST':
-        print(request.url)
-
-        if 'image' not in request.files:
-            return redirect(request.url)#GET
-
+    if request.method == 'POST' and 'user_id' in session:
         file = request.files['image']
-
-        if file.filename == '':
-            return redirect(request.url)
-
         if file:
             filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
             file.save(filename)
-            return redirect(url_for('index'))
-    else:#get
+            return redirect(url_for('home'))
+    else:
         return redirect(url_for('page_not_found'))
 
 
