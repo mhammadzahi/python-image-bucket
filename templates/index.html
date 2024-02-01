@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Bucket</title>
+</head>
+<body>
+    <h1>Image Bucket</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+    <h2>Uploaded Images:</h2>
+    <ul>
+        {% for file in image_files %}
+            <li><img src="{{ url_for('static', filename='uploads/' + file) }}" alt="{{ file }}"></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
