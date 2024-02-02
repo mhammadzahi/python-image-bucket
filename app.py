@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__)
 app.secret_key = "zs9qllEyijgsjoOoLrA7u"
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = 'static'
 
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_FILE_DIR'] = '/tmp/flask_session'
@@ -48,18 +48,32 @@ def login():
 
 
 
-@app.route('/upload', methods=['POST'])
-def upload():
+@app.route('/upload-main', methods=['POST'])
+def upload_main():
     if request.method == 'POST' and 'user_id' in session:
-        files = request.files.getlist('image')  # Use getlist for multiple files
+        file = request.files['image']
+        filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(filename)
+        if hh:
+            result = {"success": "yes"}
+        else:
+            result = {"success": "no"}
+
+        return jsonify(result)
+
+
+
+"""
+@app.route('/upload-other', methods=['POST'])
+def upload_other():
+    if request.method == 'POST' and 'user_id' in session:
+        files = request.files.getlist('image')
         for file in files:
             if file:
                 filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
                 file.save(filename)
         
-        return redirect(url_for('home'))
-    else:
-        return redirect(url_for('page_not_found'))
+        return redirect(url_for('home'))"""
 
 
 

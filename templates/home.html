@@ -33,7 +33,7 @@
             box-sizing: border-box;
         }
         input[type="submit"] {
-            background-color: #3498db;
+            background-color: #cf0149;
             color: #fff;
             padding: 10px 20px;
             border: none;
@@ -43,34 +43,97 @@
             transition: background-color 0.3s;
         }
         input[type="submit"]:hover {
-            background-color: #2980b9;
+            background-color: #ca366a;
+        }
+        h2 {
+            color: #cf0149;
         }
     </style>
 </head>
 <body>
     <br>
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" onsubmit="sendMainPic(event)">
+        <h2>Main Picture</h2>
+        <input type="file" name="image" accept="image/*" required><br><br>
+        <input type="submit" value="Upload">
+    </form>
+
+
+    <form method="post" enctype="multipart/form-data"  onsubmit="sendOther(event)">
+        <h2>Others</h2>
         <input type="file" name="image" accept="image/*" multiple required><br><br>
         <input type="submit" value="Upload">
     </form>
+
     {% for image in image_files %}
-            <div id="{{image}}" class="urls" hidden>{{ url_for('static', filename='uploads/' + image) }}</div>
+        <div id="{{image}}" class="urls" hidden>{{ url_for('static', filename=image) }}</div>
     {% endfor %}
+
     <script>
         var urlDivs = document.querySelectorAll('.urls');
         urlDivs.forEach(function(div){
-            var content = div.textContent || div.innerText;
-            console.log(content);
+            var path = div.textContent || div.innerText;
+            console.log(path);
         });
         /*
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "welcome " + username,
+          title: "Upload succss",
           showConfirmButton: false,
           timer: 1500
         });
         */
+    </script>
+    <script>
+        function sendMainPic(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            console.log(formData);
+            fetch('/upload-main', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success === 'yes'){
+                    console.log('upload successful');
+                }else{
+                    //Swal.fire({title: 'Error!', text: 'wrong creds', icon: 'error', confirmButtonText: 'OK'});
+                    console.log('Login failed');
+                }
+                console.log('Server response:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+    <script>
+        function sendOther(event){
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            console.log(formData);
+            fetch('/upload-other', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success === 'yes'){
+                    console.log('upload successful');
+                }else{
+                    //Swal.fire({title: 'Error!', text: 'wrong creds', icon: 'error', confirmButtonText: 'OK'});
+                    console.log('Login failed');
+                }
+                console.log('Server response:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
     </script>
 </body>
 </html>

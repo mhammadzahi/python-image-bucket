@@ -73,7 +73,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (data.success === 'yes') {
+                if(data.success === 'yes') {
                     console.log('Login successful');
                     document.location.href = '/';
                 }else {
