@@ -4,7 +4,7 @@ from datetime import date, timedelta
 import os
 
 app = Flask(__name__)
-app.secret_key = "zs9qllEyijgsjoOoLrA7u"
+app.secret_key = "your_secret_key"
 app.config['UPLOAD_FOLDER'] = 'static'
 
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -19,7 +19,7 @@ def redirect_https():
         if request.headers.get('X-Forwarded-Proto') == 'http':
             url = request.url.replace('http://', 'https://', 1)
             return redirect(url, code=301)
-        
+ 
 
 
 @app.route('/')
@@ -70,8 +70,7 @@ def upload_other():
         
         return redirect(url_for('home'))"""
 
-
-
+#####
 
 """
 import random
@@ -91,8 +90,6 @@ print(str(random.random()).split('.')[1])
 def clear_session():
     session.clear()
     return redirect(url_for('home')) 
-
-
 
 @app.errorhandler(404)
 def page_not_found(error):
