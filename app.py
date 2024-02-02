@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flask_session import Session
 from datetime import date, timedelta
 import os
 
 app = Flask(__name__)
-app.secret_key = "zs9qsEyijgsjOoLrA7u"
+app.secret_key = "zs9qllEyijgsjoOoLrA7u"
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -30,16 +30,43 @@ def home():
     else:
         return(render_template('login.html'))
 
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    if email.strip() == 'test@test.com' and password.strip() == '123':
+        session['user_id'] = 1
+        result = {"success": "yes"}
+    else:
+        result = {"success": "no"}
+
+    return jsonify(result)
+
+
+
 @app.route('/upload', methods=['POST'])
 def upload():
     if request.method == 'POST' and 'user_id' in session:
-        file = request.files['image']
-        if file:
-            filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-            file.save(filename)
-            return redirect(url_for('home'))
+        files = request.files.getlist('image')  # Use getlist for multiple files
+        for file in files:
+            if file:
+                filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+                file.save(filename)
+        
+        return redirect(url_for('home'))
     else:
         return redirect(url_for('page_not_found'))
+
+
+
+@app.route('/logout')
+def clear_session():
+    session.clear()
+    return redirect(url_for('home')) 
 
 
 
@@ -47,7 +74,8 @@ def upload():
 def page_not_found(error):
     return render_template('error.html')
 
-#if __name__ == '__main__':
+if __name__ == '__main__':
     #app.run(port=8181, host="0.0.0.0")
-    #app.run(debug=True)
+    app.run(debug=True)
     #app.run()
+
