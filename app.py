@@ -10,7 +10,7 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_FILE_DIR'] = '/tmp/flask_session'
 app.config['SESSION_PERMANENT'] = False 
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
 Session(app)
 
 @app.before_request
