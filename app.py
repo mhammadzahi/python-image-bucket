@@ -54,12 +54,7 @@ def upload_main():
         file = request.files['image']
         filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(filename)
-        if hh:
-            result = {"success": "yes"}
-        else:
-            result = {"success": "no"}
-
-        return jsonify(result)
+        return jsonify({"success": "yes"})
 
 
 
@@ -75,6 +70,21 @@ def upload_other():
         
         return redirect(url_for('home'))"""
 
+
+
+
+"""
+import random
+
+
+# First run
+random.seed(4)
+print(str(random.random()).split('.')[1])
+
+# Second run with the same seed
+random.seed(3)
+print(str(random.random()).split('.')[1])
+"""
 
 
 @app.route('/logout')

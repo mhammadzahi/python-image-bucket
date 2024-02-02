@@ -54,7 +54,7 @@
     <br>
     <form method="post" enctype="multipart/form-data" onsubmit="sendMainPic(event)">
         <h2>Main Picture</h2>
-        <input type="file" name="image" accept="image/*" required><br><br>
+        <input type="file" id="imageInput" name="image" accept="image/*" required><br><br>
         <input type="submit" value="Upload">
     </form>
 
@@ -88,9 +88,12 @@
     <script>
         function sendMainPic(event) {
             event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-            console.log(formData);
+
+            const file = document.getElementById('imageInput').files[0];
+            const formData = new FormData();
+            formData.append('image', file);
+            //console.log(formData);
+            
             fetch('/upload-main', {
                 method: 'POST',
                 body: formData,
