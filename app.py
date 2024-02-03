@@ -87,7 +87,7 @@ print(str(random.random()).split('.')[1])
 
 
 @app.route('/logout')
-def clear_session():
+def logout():
     session.clear()
     return redirect(url_for('home')) 
 
